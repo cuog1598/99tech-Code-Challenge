@@ -1,18 +1,17 @@
+/* Base styles */
 .container {
-  /* background-color: #282c34; */
   min-height: 100vh;
-  display: grid;
-  font-size: calc(10px + 2vmin);
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: calc(10px + 2vmin);
 }
 
 .card {
   width: 60vw;
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 0 10px 20px 0 #b3bbc673;
+  box-shadow: 0 10px 20px 0 rgba(179, 187, 198, 0.45);
   padding: 30px;
 }
 
@@ -31,8 +30,10 @@
   }
 }
 
-.left {
-  flex: 1
+/* Input styles */
+.left,
+.right {
+  flex: 1;
 }
 
 :where(.left, .right) input {
@@ -49,10 +50,7 @@
   outline: none;
 }
 
-.right {
-  flex: 1
-}
-
+/* Center styles */
 .center {
   display: flex;
   align-items: center;
@@ -64,9 +62,6 @@
   border: 0;
   outline: none;
   background-color: #fff;
-}
-
-.center button :hover {
   cursor: pointer;
 }
 
@@ -74,7 +69,7 @@
   width: 28px;
 }
 
-/* SELECT */
+/* Select styles */
 .input-label {
   display: flex;
 }
@@ -84,7 +79,7 @@
   margin-right: 12px;
 }
 
-
+/* Body styles */
 body {
   display: flex;
   flex-direction: row;
@@ -94,6 +89,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Button styles */
 .button {
   width: 100%;
   background-color: #008816;
@@ -105,9 +101,9 @@ body {
   font-size: 16px;
   font-weight: 700;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .button:hover {
-  cursor: pointer;
   background-color: #034a0f;
 }
