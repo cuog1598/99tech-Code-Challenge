@@ -1,0 +1,93 @@
+I list from top to bottom
+
+1. In Typescript we need to define *children* in initial Props
+interface Props extends BoxProps {
+children: React.ReactNode;
+}
+
+2. blockchain is missing in the *WalletBalance* interface
+
+3. useWalletBalances(), usePrices() in both of 2 func. not sure if this function had a "catch error".
+and also make sure where we get data (from the custom hook or restful API) for example it from the API.
+use react hook useState to define and set data after fetching data success from API.
+
+4. getPriority = (blockchain: any) the type is *any" type. sometimes make code run not correctly.
+my observation blockchain should be *string*
+
+5. we have *Zilliqa* and *Neo* in the getPriority functions return the same value. for cleaning, we can code like:
+      case 'Zilliqa':
+      case 'Neo':
+      return 20
+
+6. const balancePriority = getPriority(balance.blockchain); get balancePriority but not used and lhsPriority to check condition.
+so I guess balancePriority needed to change to lhsPriority
+
+7. if (lhsPriority > -99) {
+    if (balance.amount <= 0) {
+    return true;
+    }
+}
+don't need to check many conditions return balancePriority > -99 && balance.amount <= 0;
+
+8. Using too many switch cases makes it hard to maintain. If can create the object with type: { [key: string]: number }
+    const blockchainPriorities: { [key: string]: number } = {
+    Osmosis: 100,
+    Ethereum: 50,
+    Arbitrum: 30,
+    Zilliqa: 20,
+    Neo: 20,
+    default: -99,
+    };
+
+9. formattedBalances used map to add formatted: balance.amount.toFixed(), and uses it again when rendering data, which is unnecessary.
+You can directly use *balance.amount* without creating formatted
+
+10. sortBalance don't need to add more conditions like that
+      const leftPriority = getPriority(lhs.blockchain);
+      onst rightPriority = getPriority(rhs.blockchain);
+      if (leftPriority > rightPriority) {
+      return -1;
+      } else if (rightPriority > leftPriority) {
+      return 1;
+      }
+      for clean:
+      const leftPriority = getPriority(lhs.blockchain);
+      const rightPriority = getPriority(rhs.blockchain);
+      return rightPriority - leftPriority;
+
+11. const usdValue = prices[balance.currency] * balance.amount;
+doesnt check prices[balance.currency] is returned correct value.
+
+12. formattedAmount={balance.formatted} we can use *amount*
+formattedAmount={balance.amount.toFixed()}
+
+13. const rows = sortedBalances.map((balance: FormattedWalletBalance, index: number) => {
+      const usdValue = prices[balance.currency] * balance.amount;
+      return (
+              <WalletRow
+              className={classes.row}
+              key={index}
+              amount={balance.amount}
+              usdValue={usdValue}
+              formattedAmount={balance.formatted}
+              />
+          )
+       })
+
+in this, we should use function and return UI for easy to handle and maintain
+const rows = (): React.ReactElement[] => {
+return sortedBalances.map((balance, index) => {
+const usdValue = (prices[balance.currency] || 0) * balance.amount;
+return (
+    <WalletRow
+      className={classes.row}
+      key={index}
+      amount={balance.amount}
+      usdValue={usdValue}
+      formattedAmount={balance.amount?.toFixed()}
+    />
+    );
+  });
+};
+
+return <div {...rest}>{rows()}</div>;
