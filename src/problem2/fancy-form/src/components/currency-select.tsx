@@ -14,8 +14,12 @@ const CurrencySelect: React.FC<Props> = (props) => {
   const getImgName = (name: string) => {
     const head = name.slice(0, 2)?.toLocaleLowerCase();
 
-    if (head === "st" && !["STRD", "RATOM"].includes(name)) {
+    if (head === "st" && !["STRD"].includes(name)) {
       return "st" + name.substring(2);
+    }
+
+    if (name === "RATOM") {
+      return "rATOM";
     }
 
     return name;
